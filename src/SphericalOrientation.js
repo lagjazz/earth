@@ -41,11 +41,11 @@ export function computeOrientation(position, forward, earthRadius = 1) {
     };
   }
 
-  // 3. Right = up × forward (right-handed cross product)
-  const right = new THREE.Vector3().crossVectors(upVec, forwardProjected).normalize();
+  // 3. Right = forward × up (right-handed basis for makeBasis)
+  const right = new THREE.Vector3().crossVectors(forwardProjected, upVec).normalize();
 
-  // 4. Re-orthogonalize up = right × forward
-  const upFinal = new THREE.Vector3().crossVectors(right, forwardProjected).normalize();
+  // 4. Re-orthogonalize up = forward × right
+  const upFinal = new THREE.Vector3().crossVectors(forwardProjected, right).normalize();
 
   // 5. Build rotation matrix from orthonormal basis
   const m = new THREE.Matrix4();
@@ -66,11 +66,24 @@ export function computeOrientation(position, forward, earthRadius = 1) {
 /**
  * Smoothly interpolate a container's quaternion toward the target orientation.
  *
+ * Critical: ensures shortest-path interpolation by checking quaternion sign.
+ * `setFromRotationMatrix` can return q or -q (both represent the same rotation).
+ * Without this check, slerp takes the long way around (180° wrong direction),
+ * causing sudden visual flips.
+ *
  * @param {THREE.Quaternion} current - Current quaternion (will be mutated)
  * @param {THREE.Quaternion} target - Target quaternion
  * @param {number} smoothing - Smoothing factor (0-1, higher = faster convergence)
  */
 export function smoothOrientation(current, target, smoothing = 0.15) {
+  // Ensure shortest-path slerp: if dot < 0, target is on the opposite hemisphere
+  // (setFromRotationMatrix can return q or -q; both represent the same rotation)
+  if (current.dot(target) < 0) {
+    target.x = -target.x;
+    target.y = -target.y;
+    target.z = -target.z;
+    target.w = -target.w;
+  }
   current.slerp(target, smoothing);
 }
 
