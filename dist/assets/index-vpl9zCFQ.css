@@ -1,0 +1,1 @@
+*{margin:0;padding:0;box-sizing:border-box}body{overflow:hidden;background:#000;font-family:Segoe UI,system-ui,sans-serif}#canvas-container{width:100vw;height:100vh}#info{position:fixed;top:20px;left:20px;z-index:100;color:#fff;pointer-events:none;text-shadow:0 2px 10px rgba(0,0,0,.8)}#info h1{font-size:24px;font-weight:600;margin-bottom:4px}#info p{font-size:13px;opacity:.7}
