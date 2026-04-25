@@ -121,7 +121,7 @@ function getScale(modelPath) {
   if (modelPath.includes('airship')) return 0.001;
   if (modelPath.includes('helicopter')) return 0.003;
   if (modelPath.includes('cruise_aircraft')) return 0.0002;
-  if (modelPath.includes('cruise_liberty')) return 0.001;
+  if (modelPath.includes('cruise_liberty')) return 0.05;
   if (modelPath.includes('hot_air_balloon_rainbow')) return 0.00002;
   if (modelPath.includes('hot_air_balloon_pink')) return 0.0001;
   if (modelPath.includes('hot_air_balloon_yellow')) return 0.0001;
@@ -258,6 +258,11 @@ function createBalloon(config, index, total) {
   const container = new THREE.Group();
   group.add(container);
 
+  // Helper vectors for balloon orientation (avoid GC in update loop)
+  const _balloonRadial = new THREE.Vector3();
+  const _balloonUp = new THREE.Vector3(0, 1, 0);
+  const _balloonQuat = new THREE.Quaternion();
+
   const wrapper = new THREE.Group();
   wrapper.rotation.x = 0; // Balloons don't need flip
   container.add(wrapper);
@@ -291,6 +296,11 @@ function createBalloon(config, index, total) {
       if (!model) return;
       const state = follower.update(delta);
       follower.applyState(container, model, state);
+      // Balloons always point straight up (perpendicular to ground)
+      _balloonRadial.copy(container.position).normalize();
+      _balloonQuat.setFromUnitVectors(_balloonUp, _balloonRadial);
+      container.quaternion.copy(_balloonQuat);
+      model.quaternion.identity();
     }
   };
 }
@@ -341,6 +351,7 @@ function createCruise(config, index, total) {
 
   const wrapper = new THREE.Group();
   wrapper.rotation.x = Math.PI; // Ships sit flat (models are upside down)
+  if (modelIdx === 0) wrapper.rotation.y = Math.PI; // Aircraft carrier faces forward
   container.add(wrapper);
 
   const loader = new GLTFLoader();
