@@ -15,7 +15,7 @@ export default class CloudLayer {
   _init() {
     const loader = new THREE.TextureLoader()
 
-    const cloudTexture = loader.load('/textures/clouds.png')
+    const cloudTexture = loader.load('/public/textures/clouds.png')
 
     // === 主云层 ===
     const geometry = new THREE.SphereGeometry(

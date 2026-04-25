@@ -42,8 +42,22 @@ rotationToggle.addEventListener('change', (e) => {
   earthRotationEnabled = e.target.checked;
 });
 
+// Country labels toggle
+const labelsToggle = document.getElementById('labels-toggle');
+let labelsEnabled = labelsToggle.checked;
+labelsToggle.addEventListener('change', (e) => {
+  labelsEnabled = e.target.checked;
+  if (scene.labels) {
+    scene.labels.group.visible = labelsEnabled;
+  }
+});
+
+// Hide labels on initial load (toggle is off by default)
+if (scene.labels) scene.labels.group.visible = false;
+
 // Animation loop
 const clock = new THREE.Clock();
+const fleetStatus = document.getElementById('fleet-status');
 
 function animate() {
   requestAnimationFrame(animate);
@@ -51,11 +65,23 @@ function animate() {
   const delta = clock.getDelta();
   const elapsed = clock.getElapsedTime();
   
+  // Update fleet status
+  if (fleetStatus && scene.fleet) {
+    const loaded = scene.fleet.loadedCount;
+    const total = scene.fleet.total;
+    if (loaded < total) {
+      fleetStatus.textContent = `🚀 Loading fleet... ${loaded}/${total}`;
+    } else if (loaded === total) {
+      fleetStatus.textContent = `🚀 ${total} vehicles active`;
+      fleetStatus.style.color = '#4a4';
+    }
+  }
+  
   // Update all animated systems
   if (earthRotationEnabled) scene.earth?.rotate(delta);
   scene.aurora?.update(elapsed);
-  scene.labels?.update(camera);
-  scene.plane?.update(delta, elapsed);
+  if (labelsEnabled) scene.labels?.update(camera);
+  scene.fleet?.update(delta, elapsed);
   
   // Sync sun direction with Earth shader
   if (scene.sunLight) {

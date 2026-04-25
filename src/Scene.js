@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { createEarth } from './Earth.js';
 import { createAurora } from './Aurora.js';
 import { createLabels } from './Labels.js';
-import { createPlane } from './Plane.js';
+import { createFleet } from './Fleet.js';
 
 // ─── Scene Module ───
 // Assembles all systems into a single scene group
@@ -26,9 +26,8 @@ export function createScene() {
   const labels = createLabels();
   earth.group.add(labels.group);
   
-  // ─── Plane (child of Earth) ───
-  const plane = createPlane();
-  earth.group.add(plane.group);
+  // ─── Fleet (child of Earth) ──
+  const fleet = createFleet(earth.group);
   
   // ─── Lighting ───
   // Sun (directional, affects day/night)
@@ -49,7 +48,7 @@ export function createScene() {
     earth,
     aurora,
     labels,
-    plane,
+    fleet,
     sunLight,
     ambientLight
   };
