@@ -7,7 +7,7 @@ import { createFleet } from './Fleet.js';
 // ─── Scene Module ───
 // Assembles all systems into a single scene group
 
-export function createScene() {
+export async function createScene() {
   const group = new THREE.Group();
   
   // ─── Starfield Background ───
@@ -26,8 +26,8 @@ export function createScene() {
   const labels = createLabels();
   earth.group.add(labels.group);
   
-  // ─── Fleet (child of Earth) ──
-  const fleet = createFleet(earth);
+  // ─── Fleet (child of Earth) ── (async: preloads all GLB models)
+  const fleet = await createFleet(earth);
   
   // ─── Lighting ───
   // Sun (directional, affects day/night)

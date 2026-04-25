@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { createScene } from './Scene.js';
 
-// ─── Main Entry Point ───
+// ─── Main Entry Point (async IIFE for model preloading) ───
+(async () => {
 
 const container = document.getElementById('canvas-container');
 
@@ -14,8 +15,8 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.2;
 container.appendChild(renderer.domElement);
 
-// Scene
-const scene = createScene();
+// Scene (async: preloads all GLB models via ModelCache)
+const scene = await createScene();
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
@@ -112,3 +113,5 @@ window.addEventListener('resize', () => {
 });
 
 animate();
+
+})();

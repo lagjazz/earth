@@ -1,11 +1,11 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {
   createPathFollower,
   createGreatCircleCurve,
   createFlightPathLine,
   createContrail
 } from './PathFollower.js';
+import { getModelCache } from './ModelCache.js';
 
 // ─── Plane Module ───
 // Consumer of PathFollower + SphericalOrientation algorithms.
@@ -47,33 +47,23 @@ export function createPlane() {
   wrapper.rotation.x = Math.PI;
   container.add(wrapper);
 
-  // ── Load GLB model ──
-  const loader = new GLTFLoader();
+  // ── Load GLB model via cache (single load, shared across instances) ──
+  const cache = getModelCache();
   const modelPath = '/models/aircraft_boeing_747_red.glb';
   let airplane = null;
 
   console.log(`Loading airplane: ${modelPath}`);
 
-  loader.load(
-    modelPath,
-    (gltf) => {
-      console.log('Plane model loaded ✓');
-      airplane = gltf.scene;
-      airplane.scale.set(0.00125, 0.00125, 0.00125);
-      wrapper.add(airplane);
-      group.visible = true;
-      console.log('Airplane ready! ✈️');
-    },
-    (xhr) => {
-      if (xhr.total) {
-        const pct = ((xhr.loaded / xhr.total) * 100).toFixed(0);
-        console.log(`Loading: ${pct}%`);
-      }
-    },
-    (error) => {
-      console.error('Failed to load plane model:', error);
-    }
-  );
+  cache.get(modelPath).then((clonedScene) => {
+    console.log('Plane model loaded ✓');
+    airplane = clonedScene;
+    airplane.scale.set(0.00125, 0.00125, 0.00125);
+    wrapper.add(airplane);
+    group.visible = true;
+    console.log('Airplane ready! ✈️');
+  }).catch((error) => {
+    console.error('Failed to load plane model:', error);
+  });
 
   return {
     group,

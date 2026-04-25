@@ -1,11 +1,11 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import {
   createPathFollower,
   createGreatCircleCurve,
   createFlightPathLine,
   createContrail
 } from './PathFollower.js';
+import { getModelCache } from './ModelCache.js';
 
 // ─── Fleet Module ───
 // Manages all vehicles: aircraft, balloons, airships, helicopters, cruise ships.
@@ -48,24 +48,25 @@ const CITIES = {
 // ── Aircraft models ──
 const AIRCRAFT = [
   '/models/aircraft_boeing_747_red.glb',
-  '/models/aircraft_yellow.glb',
+  '/models/spaceship_scifi_1k.glb',
   '/models/aircraft_boeing_737_blue.glb',
   '/models/aircraft_private_jet.glb',
-  '/models/aircraft_space_ship.glb'
+  '/models/aircraft_rocket.glb',
+  '/models/aircraft_dc-10-30_fedex.glb',
 ];
 
 // ── Hot air balloon models ──
 const BALLOONS = [
   '/models/hot_air_balloon_blue_white.glb',
   '/models/hot_air_balloon_pink_white.glb',
-  '/models/hot_air_balloon_rainbow.glb',
   '/models/hot_air_balloon_yellow_red.glb',
   '/models/hot_air_balloon_blue.glb',
+  //'/models/hot_air_balloon_rainbow.glb',
 ];
 
 // ── All vehicle routes ──
 const VEHICLES = [
-  // ── 15 Aircraft ──
+  // ── 40 Aircraft ──
   { type: 'aircraft', from: 'toronto',    to: 'beijing',    model: 0, color: 0x4488ff, speed: 0.015, delay: 0 },
   { type: 'aircraft', from: 'newyork',    to: 'london',     model: 1, color: 0xffaa44, speed: 0.018, delay: 2 },
   { type: 'aircraft', from: 'losangeles', to: 'tokyo',      model: 2, color: 0x44aaff, speed: 0.012, delay: 5 },
@@ -81,12 +82,41 @@ const VEHICLES = [
   { type: 'aircraft', from: 'berlin',     to: 'tokyo',      model: 2, color: 0xff8844, speed: 0.015, delay: 11 },
   { type: 'aircraft', from: 'dubai',      to: 'saopaulo',   model: 3, color: 0x8844ff, speed: 0.010, delay: 3 },
   { type: 'aircraft', from: 'lagos',      to: 'bangkok',    model: 4, color: 0x4488ff, speed: 0.012, delay: 12 },
+  // 5 Boeing 737 Blue
+  { type: 'aircraft', from: 'vancouver',  to: 'seoul',      model: 2, color: 0x4488ff, speed: 0.014, delay: 1 },
+  { type: 'aircraft', from: 'havana',     to: 'miami',      model: 2, color: 0x88aaff, speed: 0.016, delay: 3 },
+  { type: 'aircraft', from: 'boston',     to: 'berlin',     model: 2, color: 0x6699cc, speed: 0.013, delay: 5 },
+  { type: 'aircraft', from: 'singapore',  to: 'dubai',      model: 2, color: 0x44aacc, speed: 0.011, delay: 7 },
+  { type: 'aircraft', from: 'rio',        to: 'capetown',   model: 2, color: 0x5599dd, speed: 0.015, delay: 9 },
+  // 5 FedEx DC-10-30
+  { type: 'aircraft', from: 'losangeles', to: 'paris',      model: 5, color: 0xffcc44, speed: 0.012, delay: 2 },
+  { type: 'aircraft', from: 'tokyo',      to: 'newyork',    model: 5, color: 0xffdd66, speed: 0.014, delay: 4 },
+  { type: 'aircraft', from: 'sydney',     to: 'mumbai',     model: 5, color: 0xeebb33, speed: 0.010, delay: 6 },
+  { type: 'aircraft', from: 'london',     to: 'singapore',  model: 5, color: 0xddaa22, speed: 0.013, delay: 8 },
+  { type: 'aircraft', from: 'beijing',    to: 'saopaulo',   model: 5, color: 0xcc9911, speed: 0.011, delay: 10 },
+  // 10 more FedEx DC-10-30
+  { type: 'aircraft', from: 'mumbai',     to: 'dubai',      model: 5, color: 0xffbb33, speed: 0.013, delay: 1 },
+  { type: 'aircraft', from: 'seoul',      to: 'losangeles', model: 5, color: 0xffaa22, speed: 0.010, delay: 3 },
+  { type: 'aircraft', from: 'berlin',     to: 'newyork',    model: 5, color: 0xee9911, speed: 0.015, delay: 5 },
+  { type: 'aircraft', from: 'havana',     to: 'london',     model: 5, color: 0xdd8800, speed: 0.012, delay: 7 },
+  { type: 'aircraft', from: 'vancouver',  to: 'tokyo',      model: 5, color: 0xcc7700, speed: 0.014, delay: 9 },
+  { type: 'aircraft', from: 'miami',      to: 'paris',      model: 5, color: 0xbb6600, speed: 0.011, delay: 11 },
+  { type: 'aircraft', from: 'boston',     to: 'dubai',      model: 5, color: 0xaa5500, speed: 0.009, delay: 13 },
+  { type: 'aircraft', from: 'singapore',  to: 'mumbai',     model: 5, color: 0x994400, speed: 0.016, delay: 15 },
+  { type: 'aircraft', from: 'capetown',   to: 'rio',        model: 5, color: 0x883300, speed: 0.013, delay: 17 },
+  { type: 'aircraft', from: 'istanbul',   to: 'seoul',      model: 5, color: 0x772200, speed: 0.010, delay: 19 },
+  // 5 more Rockets
+  { type: 'aircraft', from: 'moscow',     to: 'sydney',     model: 4, color: 0xff6666, speed: 0.014, delay: 2 },
+  { type: 'aircraft', from: 'dubai',      to: 'tokyo',      model: 4, color: 0xff8888, speed: 0.016, delay: 4 },
+  { type: 'aircraft', from: 'paris',      to: 'mumbai',     model: 4, color: 0xffaaaa, speed: 0.012, delay: 6 },
+  { type: 'aircraft', from: 'berlin',     to: 'lagos',      model: 4, color: 0xffcccc, speed: 0.018, delay: 8 },
+  { type: 'aircraft', from: 'seoul',      to: 'bangkok',    model: 4, color: 0xffeeee, speed: 0.015, delay: 10 },
 
   // ── 8 Hot Air Balloons (above Turkey, 2 each of 4 models) ──
   { type: 'balloon', model: 0, color: 0x4488ff, delay: 0 },
   { type: 'balloon', model: 1, color: 0x4488ff, delay: 1 },
   { type: 'balloon', model: 2, color: 0xff88cc, delay: 2 },
-  { type: 'balloon', model: 4, color: 0xff88cc, delay: 3 },
+  { type: 'balloon', model: 3, color: 0xff88cc, delay: 3 },
   { type: 'balloon', model: 0, color: 0xff88cc, delay: 4 },
   { type: 'balloon', model: 1, color: 0xffaa44, delay: 5 },
   { type: 'balloon', model: 2, color: 0xffaa44, delay: 6 },
@@ -99,30 +129,38 @@ const VEHICLES = [
   //{ type: 'helicopter', from: 'vancouver', to: 'seattle', color: 0xff4444, speed: 0.025, delay: 0 },
   //{ type: 'helicopter', from: 'montreal',  to: 'boston',   color: 0xff4444, speed: 0.025, delay: 5 },
 
-  // ── 10 Cruise Ships (ocean routes) ──
-  { type: 'cruise', model: 0, from: 'newyork',    to: 'london',     color: 0x4488ff, speed: 0.003, delay: 0 },
-  { type: 'cruise', model: 0, from: 'losangeles', to: 'tokyo',      color: 0x4488ff, speed: 0.003, delay: 8 },
-  { type: 'cruise', model: 0, from: 'sydney',     to: 'singapore',  color: 0x4488ff, speed: 0.003, delay: 15 },
-  { type: 'cruise', model: 0, from: 'london',     to: 'saopaulo',   color: 0x4488ff, speed: 0.003, delay: 5 },
-  { type: 'cruise', model: 0, from: 'mumbai',     to: 'sydney',     color: 0x4488ff, speed: 0.003, delay: 12 },
-  { type: 'cruise', model: 1, from: 'sanfran',    to: 'tokyo',      color: 0xffaa44, speed: 0.003, delay: 3 },
-  { type: 'cruise', model: 1, from: 'sydney',     to: 'sanfran',    color: 0xffaa44, speed: 0.003, delay: 10 },
-  { type: 'cruise', model: 1, from: 'rio',        to: 'london',     color: 0xffaa44, speed: 0.003, delay: 7 },
-  { type: 'cruise', model: 1, from: 'mumbai',     to: 'singapore',  color: 0xffaa44, speed: 0.003, delay: 18 },
-  { type: 'cruise', model: 1, from: 'sanfran',    to: 'honolulu',   color: 0xffaa44, speed: 0.003, delay: 14 },
+  // ── 10 Cruise Ships (ocean-only routes with waypoints) ──
+  // Routes use intermediate waypoints to avoid landmasses.
+  { type: 'cruise', model: 0, from: 'newyork',    to: 'london',     color: 0x4488ff, speed: 0.003, delay: 0, waypoints: [] },
+  { type: 'cruise', model: 0, from: 'losangeles', to: 'tokyo',      color: 0x4488ff, speed: 0.003, delay: 8, waypoints: [] },
+  { type: 'cruise', model: 0, from: 'sydney',     to: 'singapore',  color: 0x4488ff, speed: 0.003, delay: 15, waypoints: [
+    { lat: -20, lng: 165 }, { lat: -10, lng: 155 }, { lat: -3, lng: 148 }, { lat: 3, lng: 135 }, { lat: 8, lng: 120 }
+  ]},
+  { type: 'cruise', model: 0, from: 'london',     to: 'saopaulo',   color: 0x4488ff, speed: 0.003, delay: 5, waypoints: [] },
+  { type: 'cruise', model: 0, from: 'mumbai',     to: 'sydney',     color: 0x4488ff, speed: 0.003, delay: 12, waypoints: [
+    { lat: 5, lng: 70 }, { lat: -5, lng: 80 }, { lat: -8, lng: 105 }, { lat: -12, lng: 120 }, { lat: -18, lng: 140 }
+  ]},
+  { type: 'cruise', model: 1, from: 'sanfran',    to: 'tokyo',      color: 0xffaa44, speed: 0.003, delay: 3, waypoints: [] },
+  { type: 'cruise', model: 1, from: 'sydney',     to: 'sanfran',    color: 0xffaa44, speed: 0.003, delay: 10, waypoints: [] },
+  { type: 'cruise', model: 1, from: 'rio',        to: 'london',     color: 0xffaa44, speed: 0.003, delay: 7, waypoints: [] },
+  { type: 'cruise', model: 1, from: 'mumbai',     to: 'singapore',  color: 0xffaa44, speed: 0.003, delay: 18, waypoints: [
+    { lat: 5, lng: 70 }, { lat: -2, lng: 85 }, { lat: -5, lng: 105 }, { lat: 0, lng: 110 }
+  ]},
+  { type: 'cruise', model: 1, from: 'sanfran',    to: 'honolulu',   color: 0xffaa44, speed: 0.003, delay: 14, waypoints: [] },
 ];
 
 // ── Scale map ──
 function getScale(modelPath) {
   if (modelPath.includes('private_jet')) return 0.01;
   if (modelPath.includes('737')) return 0.000015;
-  if (modelPath.includes('space_ship')) return 0.01;
-  if (modelPath.includes('aircraft_yellow')) return 0.005;
+  if (modelPath.includes('rocket')) return 0.00004;
+  if (modelPath.includes('spaceship_scifi')) return 0.005;
+  if (modelPath.includes('dc-10')) return 0.001;
   if (modelPath.includes('airship')) return 0.001;
   if (modelPath.includes('helicopter')) return 0.003;
   if (modelPath.includes('cruise_aircraft')) return 0.0002;
   if (modelPath.includes('cruise_liberty')) return 0.3;
-  if (modelPath.includes('hot_air_balloon_rainbow')) return 0.00002;
+  if (modelPath.includes('hot_air_balloon_rainbow')) return 0.0002;
   if (modelPath.includes('hot_air_balloon_pink')) return 0.0001;
   if (modelPath.includes('hot_air_balloon_yellow')) return 0.0001;
   if (modelPath.includes('hot_air_balloon_blue_white')) return 0.002;
@@ -132,7 +170,9 @@ function getScale(modelPath) {
 
 // ── Wrapper rotation per model ──
 function getWrapperRotation(modelPath) {
-  if (modelPath.includes('aircraft_yellow')) return { x: Math.PI, y: Math.PI / 2 };
+  if (modelPath.includes('spaceship_scifi')) return { x: Math.PI, y: Math.PI / 2 };
+  if (modelPath.includes('rocket')) return { x: Math.PI, y: -Math.PI / 2 }; // 90° clockwise
+  if (modelPath.includes('dc-10')) return { x: Math.PI, y: Math.PI / 2 }; // 90° counter-clockwise
   return { x: Math.PI, y: 0 };
 }
 
@@ -165,6 +205,36 @@ function createCirclePath(lat, lng, radius, earthRadius, segments = 60) {
   return new THREE.CatmullRomCurve3(points, true);
 }
 
+/**
+ * Create a smooth ocean path from waypoints.
+ * Chains great circle segments between consecutive points into a CatmullRom spline.
+ * @param {Object} fromCity - { lat, lng }
+ * @param {Object} toCity - { lat, lng }
+ * @param {Array} waypoints - Array of { lat, lng } intermediate points over water
+ * @param {number} segments - Points per great circle segment
+ */
+function createOceanPath(fromCity, toCity, waypoints, segments = 100) {
+  const points = [];
+  const allPoints = [
+    { lat: fromCity.lat, lng: fromCity.lng },
+    ...waypoints,
+    { lat: toCity.lat, lng: toCity.lng },
+  ];
+
+  // Generate great circle segments between each pair of consecutive waypoints
+  for (let i = 0; i < allPoints.length - 1; i++) {
+    const from = allPoints[i];
+    const to = allPoints[i + 1];
+    const segment = createGreatCircleCurve(from.lat, from.lng, to.lat, to.lng, segments, 1);
+    const segPoints = segment.getPoints(segments);
+    // Skip the first point (already added from previous segment)
+    if (i > 0) segPoints.shift();
+    points.push(...segPoints);
+  }
+
+  return new THREE.CatmullRomCurve3(points, false);
+}
+
 function latLngToVector3(lat, lng, radius) {
   const phi = (90 - lat) * (Math.PI / 180);
   const theta = (lng + 180) * (Math.PI / 180);
@@ -175,25 +245,50 @@ function latLngToVector3(lat, lng, radius) {
 }
 
 /**
+ * Collect all unique model paths used by the fleet.
+ */
+function getAllModelPaths() {
+  const paths = new Set();
+  // Aircraft
+  AIRCRAFT.forEach(p => paths.add(p));
+  // Balloons
+  BALLOONS.forEach(p => paths.add(p));
+  // Airship / Helicopter
+  paths.add('/models/airship.glb');
+  paths.add('/models/helicopter_red.glb');
+  // Cruises
+  paths.add('/models/cruise_aircraft_carrier.glb');
+  paths.add('/models/cruise_liberty.glb');
+  return [...paths];
+}
+
+/**
  * Create the full fleet.
  */
-export function createFleet(earth) {
+export async function createFleet(earth) {
   const parentGroup = earth.group;
   const vehicles = [];
   const total = VEHICLES.length;
+  const cache = getModelCache();
+
+  // Preload all unique models in parallel (single HTTP request per model)
+  const modelPaths = getAllModelPaths();
+  console.log(`[Fleet] Preloading ${modelPaths.length} unique models...`);
+  await Promise.all(modelPaths.map(p => cache.preload(p)));
+  console.log('[Fleet] All models preloaded ✓');
 
   VEHICLES.forEach((v, index) => {
     let vehicle;
     if (v.type === 'balloon') {
-      vehicle = createBalloon(v, index, total);
+      vehicle = createBalloon(v, index, total, cache);
     } else if (v.type === 'airship') {
-      vehicle = createVehicle(v, index, total);
+      vehicle = createVehicle(v, index, total, cache);
     } else if (v.type === 'helicopter') {
-      vehicle = createVehicle(v, index, total);
+      vehicle = createVehicle(v, index, total, cache);
     } else if (v.type === 'cruise') {
-      vehicle = createCruise(v, index, total, earth);
+      vehicle = createCruise(v, index, total, earth, cache);
     } else {
-      vehicle = createVehicle(v, index, total);
+      vehicle = createVehicle(v, index, total, cache);
     }
     parentGroup.add(vehicle.group);
     vehicles.push(vehicle);
@@ -214,7 +309,7 @@ export function createFleet(earth) {
 /**
  * Create a hot air balloon hovering above Turkey.
  */
-function createBalloon(config, index, total) {
+function createBalloon(config, index, total, cache) {
   const { model: modelIdx, color, delay } = config;
   const modelPath = BALLOONS[modelIdx];
 
@@ -268,12 +363,11 @@ function createBalloon(config, index, total) {
   wrapper.rotation.x = 0; // Balloons don't need flip
   container.add(wrapper);
 
-  const loader = new GLTFLoader();
   let model = null;
   const scale = getScale(modelPath);
 
-  loader.load(modelPath, (gltf) => {
-    model = gltf.scene;
+  cache.get(modelPath).then((clonedScene) => {
+    model = clonedScene;
     model.scale.set(scale, scale, scale);
     model.traverse((child) => {
       if (child.isMesh) {
@@ -287,7 +381,7 @@ function createBalloon(config, index, total) {
     wrapper.add(model);
     group.visible = true;
     console.log(`🎈 Balloon ${index + 1} ready above Turkey`);
-  }, null, (e) => console.error(`Balloon ${index + 1} load failed:`, e));
+  }).catch(e => console.error(`Balloon ${index + 1} load failed:`, e));
 
   return {
     group,
@@ -307,10 +401,10 @@ function createBalloon(config, index, total) {
 }
 
 /**
- * Create a cruise ship (stays on ocean surface).
+ * Create a cruise ship (stays on ocean surface via waypoint routes).
  */
-function createCruise(config, index, total, earth) {
-  const { model: modelIdx, from, to, color, speed, delay } = config;
+function createCruise(config, index, total, earth, cache) {
+  const { model: modelIdx, from, to, color, speed, delay, waypoints = [] } = config;
   const modelPath = modelIdx === 0
     ? '/models/cruise_aircraft_carrier.glb'
     : '/models/cruise_liberty.glb';
@@ -321,11 +415,8 @@ function createCruise(config, index, total, earth) {
   const group = new THREE.Group();
   group.visible = false;
 
-  const curve = createGreatCircleCurve(
-    fromCity.lat, fromCity.lng,
-    toCity.lat, toCity.lng,
-    100, 1
-  );
+  // Use ocean-only waypoint path instead of great circle
+  const curve = createOceanPath(fromCity, toCity, waypoints, 100);
 
   // Subtle path line
   const pathLine = createFlightPathLine(curve.getPoints(100), color, 0.03);
@@ -355,12 +446,11 @@ function createCruise(config, index, total, earth) {
   if (modelIdx === 0) wrapper.rotation.y = Math.PI; // Aircraft carrier faces forward
   container.add(wrapper);
 
-  const loader = new GLTFLoader();
   let model = null;
   const scale = getScale(modelPath);
 
-  loader.load(modelPath, (gltf) => {
-    model = gltf.scene;
+  cache.get(modelPath).then((clonedScene) => {
+    model = clonedScene;
     model.scale.set(scale, scale, scale);
     model.traverse((child) => {
       if (child.isMesh) {
@@ -374,7 +464,7 @@ function createCruise(config, index, total, earth) {
     wrapper.add(model);
     group.visible = true;
     console.log(`🚢 Cruise ${index + 1} ready: ${fromCity.name} → ${toCity.name}`);
-  }, null, (e) => console.error(`Cruise ${index + 1} load failed:`, e));
+  }).catch(e => console.error(`Cruise ${index + 1} load failed:`, e));
 
   return {
     group,
@@ -384,11 +474,7 @@ function createCruise(config, index, total, earth) {
       if (!model) return;
       const state = follower.update(delta);
       follower.applyState(container, model, state);
-      // Hide ship when over land
-      if (earth && earth.isWater) {
-        const overWater = earth.isWater(container.position);
-        group.visible = overWater || !earth.waterMap?.image; // Show if texture not loaded
-      }
+      // No isWater check needed — routes are ocean-only via waypoints
     }
   };
 }
@@ -396,7 +482,7 @@ function createCruise(config, index, total, earth) {
 /**
  * Create a standard vehicle (aircraft, airship, helicopter).
  */
-function createVehicle(config, index, total) {
+function createVehicle(config, index, total, cache) {
   const { type, from, to, model: modelIdx, color, speed, delay } = config;
 
   let modelPath;
@@ -455,12 +541,11 @@ function createVehicle(config, index, total) {
   wrapper.rotation.y = rot.y;
   container.add(wrapper);
 
-  const loader = new GLTFLoader();
   let model = null;
   const scale = getScale(modelPath);
 
-  loader.load(modelPath, (gltf) => {
-    model = gltf.scene;
+  cache.get(modelPath).then((clonedScene) => {
+    model = clonedScene;
     model.scale.set(scale, scale, scale);
     model.traverse((child) => {
       if (child.isMesh) {
@@ -475,7 +560,7 @@ function createVehicle(config, index, total) {
     group.visible = true;
     const emoji = type === 'airship' ? '🎈' : type === 'helicopter' ? '🚁' : '✈️';
     console.log(`${emoji} ${type} ${index + 1} ready: ${fromCity.name} → ${toCity.name}`);
-  }, null, (e) => console.error(`${type} ${index + 1} load failed:`, e));
+  }).catch(e => console.error(`${type} ${index + 1} load failed:`, e));
 
   return {
     group,

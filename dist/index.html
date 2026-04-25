@@ -4,14 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Earth Globe - Three.js</title>
-  <script type="module" crossorigin src="/assets/index-Cw3C7iSd.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-vpl9zCFQ.css">
+  <script type="module" crossorigin src="/assets/index-PsmhErmP.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-umuj8JZZ.css">
 </head>
 <body>
   <div id="canvas-container"></div>
   <div id="info">
     <h1>🌍 Earth Globe</h1>
     <p>Drag to rotate · Scroll to zoom</p>
+    <div id="controls">
+      <label class="toggle-switch">
+        <input type="checkbox" id="rotation-toggle" checked>
+        <span class="slider"></span>
+        <span class="label-text">🔄 Earth Rotation</span>
+      </label>
+      <label class="toggle-switch" style="margin-top: 6px;">
+        <input type="checkbox" id="labels-toggle">
+        <span class="slider"></span>
+        <span class="label-text">🏷️ Country Labels</span>
+      </label>
+      <div id="fleet-status" style="margin-top: 8px; font-size: 12px; color: #888;">✈️ Loading fleet...</div>
+    </div>
   </div>
 </body>
 </html>
