@@ -83,6 +83,11 @@ export function createPathFollower(config = {}) {
     // Height profile: takeoff → cruise → landing
     const height = Math.sin(Math.PI * t) * heightMultiplier;
 
+    // Scale factor: 0.4 at ground (takeoff/landing), 1.0 at cruise altitude
+    // Creates depth effect — aircraft appear small when close to ground, larger when high up
+    const heightFactor = Math.sin(Math.PI * t); // 0 at ground, 1 at cruise
+    const scaleFactor = 0.2 + heightFactor * 0.8; // 0.2 at ground → 1.0 at cruise
+
     // Position on curve
     const curvePos = getCurvePoint(t);
     const radialDir = curvePos.clone().normalize();
@@ -124,6 +129,7 @@ export function createPathFollower(config = {}) {
       position,
       curvePosition: curvePos,
       height,
+      scaleFactor,
       orientation,
       directionQuat: dirQuat,
       smoothing,

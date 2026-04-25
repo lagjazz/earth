@@ -67,50 +67,50 @@ const BALLOONS = [
 // ── All vehicle routes ──
 const VEHICLES = [
   // ── 40 Aircraft ──
-  { type: 'aircraft', from: 'toronto',    to: 'beijing',    model: 0, color: 0x4488ff, speed: 0.015, delay: 0 },
-  { type: 'aircraft', from: 'newyork',    to: 'london',     model: 1, color: 0xffaa44, speed: 0.018, delay: 2 },
-  { type: 'aircraft', from: 'losangeles', to: 'tokyo',      model: 2, color: 0x44aaff, speed: 0.012, delay: 5 },
-  { type: 'aircraft', from: 'sydney',     to: 'singapore',  model: 3, color: 0x44ff88, speed: 0.016, delay: 1 },
-  { type: 'aircraft', from: 'saopaulo',   to: 'london',     model: 0, color: 0xff44aa, speed: 0.010, delay: 8 },
-  { type: 'aircraft', from: 'paris',      to: 'dubai',      model: 0, color: 0xff6644, speed: 0.020, delay: 3 },
-  { type: 'aircraft', from: 'mumbai',     to: 'sydney',     model: 0, color: 0x44ffaa, speed: 0.014, delay: 6 },
-  { type: 'aircraft', from: 'moscow',     to: 'newyork',    model: 2, color: 0xaa44ff, speed: 0.011, delay: 4 },
-  { type: 'aircraft', from: 'capetown',   to: 'mumbai',     model: 3, color: 0xffff44, speed: 0.013, delay: 7 },
-  { type: 'aircraft', from: 'bangkok',    to: 'losangeles', model: 0, color: 0x44ffff, speed: 0.009, delay: 10 },
-  { type: 'aircraft', from: 'seoul',      to: 'paris',      model: 0, color: 0xff4444, speed: 0.017, delay: 2 },
-  { type: 'aircraft', from: 'istanbul',   to: 'lagos',      model: 0, color: 0x44ff44, speed: 0.019, delay: 9 },
-  { type: 'aircraft', from: 'berlin',     to: 'tokyo',      model: 2, color: 0xff8844, speed: 0.015, delay: 11 },
-  { type: 'aircraft', from: 'dubai',      to: 'saopaulo',   model: 3, color: 0x8844ff, speed: 0.010, delay: 3 },
-  { type: 'aircraft', from: 'lagos',      to: 'bangkok',    model: 4, color: 0x4488ff, speed: 0.012, delay: 12 },
+  { type: 'aircraft', from: 'toronto',    to: 'beijing',    model: 0, color: 0x4488ff, speed: 0.01125, delay: 0 },
+  { type: 'aircraft', from: 'newyork',    to: 'london',     model: 1, color: 0xffaa44, speed: 0.0135, delay: 2 },
+  { type: 'aircraft', from: 'losangeles', to: 'tokyo',      model: 2, color: 0x44aaff, speed: 0.009, delay: 5 },
+  { type: 'aircraft', from: 'sydney',     to: 'singapore',  model: 3, color: 0x44ff88, speed: 0.012, delay: 1 },
+  { type: 'aircraft', from: 'saopaulo',   to: 'london',     model: 0, color: 0xff44aa, speed: 0.0075, delay: 8 },
+  { type: 'aircraft', from: 'paris',      to: 'dubai',      model: 0, color: 0xff6644, speed: 0.015, delay: 3 },
+  { type: 'aircraft', from: 'mumbai',     to: 'sydney',     model: 0, color: 0x44ffaa, speed: 0.0105, delay: 6 },
+  { type: 'aircraft', from: 'moscow',     to: 'newyork',    model: 2, color: 0xaa44ff, speed: 0.00825, delay: 4 },
+  { type: 'aircraft', from: 'capetown',   to: 'mumbai',     model: 3, color: 0xffff44, speed: 0.00975, delay: 7 },
+  { type: 'aircraft', from: 'bangkok',    to: 'losangeles', model: 0, color: 0x44ffff, speed: 0.00675, delay: 10 },
+  { type: 'aircraft', from: 'seoul',      to: 'paris',      model: 0, color: 0xff4444, speed: 0.01275, delay: 2 },
+  { type: 'aircraft', from: 'istanbul',   to: 'lagos',      model: 0, color: 0x44ff44, speed: 0.01425, delay: 9 },
+  { type: 'aircraft', from: 'berlin',     to: 'tokyo',      model: 2, color: 0xff8844, speed: 0.01125, delay: 11 },
+  { type: 'aircraft', from: 'dubai',      to: 'saopaulo',   model: 3, color: 0x8844ff, speed: 0.0075, delay: 3 },
+  { type: 'aircraft', from: 'lagos',      to: 'bangkok',    model: 4, color: 0x4488ff, speed: 0.009, delay: 12 },
   // 5 Boeing 737 Blue
-  { type: 'aircraft', from: 'vancouver',  to: 'seoul',      model: 2, color: 0x4488ff, speed: 0.014, delay: 1 },
-  { type: 'aircraft', from: 'havana',     to: 'miami',      model: 2, color: 0x88aaff, speed: 0.016, delay: 3 },
-  { type: 'aircraft', from: 'boston',     to: 'berlin',     model: 2, color: 0x6699cc, speed: 0.013, delay: 5 },
-  { type: 'aircraft', from: 'singapore',  to: 'dubai',      model: 2, color: 0x44aacc, speed: 0.011, delay: 7 },
-  { type: 'aircraft', from: 'rio',        to: 'capetown',   model: 2, color: 0x5599dd, speed: 0.015, delay: 9 },
+  { type: 'aircraft', from: 'vancouver',  to: 'seoul',      model: 2, color: 0x4488ff, speed: 0.0105, delay: 1 },
+  { type: 'aircraft', from: 'havana',     to: 'miami',      model: 2, color: 0x88aaff, speed: 0.012, delay: 3 },
+  { type: 'aircraft', from: 'boston',     to: 'berlin',     model: 2, color: 0x6699cc, speed: 0.00975, delay: 5 },
+  { type: 'aircraft', from: 'singapore',  to: 'dubai',      model: 2, color: 0x44aacc, speed: 0.00825, delay: 7 },
+  { type: 'aircraft', from: 'rio',        to: 'capetown',   model: 2, color: 0x5599dd, speed: 0.01125, delay: 9 },
   // 5 FedEx DC-10-30
-  { type: 'aircraft', from: 'losangeles', to: 'paris',      model: 5, color: 0xffcc44, speed: 0.012, delay: 2 },
-  { type: 'aircraft', from: 'tokyo',      to: 'newyork',    model: 5, color: 0xffdd66, speed: 0.014, delay: 4 },
-  { type: 'aircraft', from: 'sydney',     to: 'mumbai',     model: 5, color: 0xeebb33, speed: 0.010, delay: 6 },
-  { type: 'aircraft', from: 'london',     to: 'singapore',  model: 5, color: 0xddaa22, speed: 0.013, delay: 8 },
-  { type: 'aircraft', from: 'beijing',    to: 'saopaulo',   model: 5, color: 0xcc9911, speed: 0.011, delay: 10 },
+  { type: 'aircraft', from: 'losangeles', to: 'paris',      model: 5, color: 0xffcc44, speed: 0.009, delay: 2 },
+  { type: 'aircraft', from: 'tokyo',      to: 'newyork',    model: 5, color: 0xffdd66, speed: 0.0105, delay: 4 },
+  { type: 'aircraft', from: 'sydney',     to: 'mumbai',     model: 5, color: 0xeebb33, speed: 0.0075, delay: 6 },
+  { type: 'aircraft', from: 'london',     to: 'singapore',  model: 5, color: 0xddaa22, speed: 0.00975, delay: 8 },
+  { type: 'aircraft', from: 'beijing',    to: 'saopaulo',   model: 5, color: 0xcc9911, speed: 0.00825, delay: 10 },
   // 10 more FedEx DC-10-30
-  { type: 'aircraft', from: 'mumbai',     to: 'dubai',      model: 5, color: 0xffbb33, speed: 0.013, delay: 1 },
-  { type: 'aircraft', from: 'seoul',      to: 'losangeles', model: 5, color: 0xffaa22, speed: 0.010, delay: 3 },
-  { type: 'aircraft', from: 'berlin',     to: 'newyork',    model: 5, color: 0xee9911, speed: 0.015, delay: 5 },
-  { type: 'aircraft', from: 'havana',     to: 'london',     model: 5, color: 0xdd8800, speed: 0.012, delay: 7 },
-  { type: 'aircraft', from: 'vancouver',  to: 'tokyo',      model: 5, color: 0xcc7700, speed: 0.014, delay: 9 },
-  { type: 'aircraft', from: 'miami',      to: 'paris',      model: 5, color: 0xbb6600, speed: 0.011, delay: 11 },
-  { type: 'aircraft', from: 'boston',     to: 'dubai',      model: 5, color: 0xaa5500, speed: 0.009, delay: 13 },
-  { type: 'aircraft', from: 'singapore',  to: 'mumbai',     model: 5, color: 0x994400, speed: 0.016, delay: 15 },
-  { type: 'aircraft', from: 'capetown',   to: 'rio',        model: 5, color: 0x883300, speed: 0.013, delay: 17 },
-  { type: 'aircraft', from: 'istanbul',   to: 'seoul',      model: 5, color: 0x772200, speed: 0.010, delay: 19 },
+  { type: 'aircraft', from: 'mumbai',     to: 'dubai',      model: 5, color: 0xffbb33, speed: 0.00975, delay: 1 },
+  { type: 'aircraft', from: 'seoul',      to: 'losangeles', model: 5, color: 0xffaa22, speed: 0.0075, delay: 3 },
+  { type: 'aircraft', from: 'berlin',     to: 'newyork',    model: 5, color: 0xee9911, speed: 0.01125, delay: 5 },
+  { type: 'aircraft', from: 'havana',     to: 'london',     model: 5, color: 0xdd8800, speed: 0.009, delay: 7 },
+  { type: 'aircraft', from: 'vancouver',  to: 'tokyo',      model: 5, color: 0xcc7700, speed: 0.0105, delay: 9 },
+  { type: 'aircraft', from: 'miami',      to: 'paris',      model: 5, color: 0xbb6600, speed: 0.00825, delay: 11 },
+  { type: 'aircraft', from: 'boston',     to: 'dubai',      model: 5, color: 0xaa5500, speed: 0.00675, delay: 13 },
+  { type: 'aircraft', from: 'singapore',  to: 'mumbai',     model: 5, color: 0x994400, speed: 0.012, delay: 15 },
+  { type: 'aircraft', from: 'capetown',   to: 'rio',        model: 5, color: 0x883300, speed: 0.00975, delay: 17 },
+  { type: 'aircraft', from: 'istanbul',   to: 'seoul',      model: 5, color: 0x772200, speed: 0.0075, delay: 19 },
   // 5 more Rockets
-  { type: 'aircraft', from: 'moscow',     to: 'sydney',     model: 4, color: 0xff6666, speed: 0.014, delay: 2 },
-  { type: 'aircraft', from: 'dubai',      to: 'tokyo',      model: 4, color: 0xff8888, speed: 0.016, delay: 4 },
-  { type: 'aircraft', from: 'paris',      to: 'mumbai',     model: 4, color: 0xffaaaa, speed: 0.012, delay: 6 },
-  { type: 'aircraft', from: 'berlin',     to: 'lagos',      model: 4, color: 0xffcccc, speed: 0.018, delay: 8 },
-  { type: 'aircraft', from: 'seoul',      to: 'bangkok',    model: 4, color: 0xffeeee, speed: 0.015, delay: 10 },
+  { type: 'aircraft', from: 'moscow',     to: 'sydney',     model: 4, color: 0xff6666, speed: 0.0105, delay: 2 },
+  { type: 'aircraft', from: 'dubai',      to: 'tokyo',      model: 4, color: 0xff8888, speed: 0.012, delay: 4 },
+  { type: 'aircraft', from: 'paris',      to: 'mumbai',     model: 4, color: 0xffaaaa, speed: 0.009, delay: 6 },
+  { type: 'aircraft', from: 'berlin',     to: 'lagos',      model: 4, color: 0xffcccc, speed: 0.0135, delay: 8 },
+  { type: 'aircraft', from: 'seoul',      to: 'bangkok',    model: 4, color: 0xffeeee, speed: 0.01125, delay: 10 },
 
   // ── 8 Hot Air Balloons (above Turkey, 2 each of 4 models) ──
   { type: 'balloon', model: 0, color: 0x4488ff, delay: 0 },
@@ -154,7 +154,7 @@ function getScale(modelPath) {
   if (modelPath.includes('private_jet')) return 0.01;
   if (modelPath.includes('737')) return 0.000015;
   if (modelPath.includes('rocket')) return 0.00004;
-  if (modelPath.includes('spaceship_scifi')) return 0.005;
+  if (modelPath.includes('spaceship_scifi')) return 0.015;
   if (modelPath.includes('dc-10')) return 0.001;
   if (modelPath.includes('airship')) return 0.001;
   if (modelPath.includes('helicopter')) return 0.003;
@@ -320,7 +320,7 @@ function createBalloon(config, index, total, cache) {
   const istanbul = CITIES.istanbul;
   // Use golden-angle spiral for even distribution across the region
   const goldenAngle = 2.399963; // ~137.5° in radians
-  const spreadRadius = 2.5; // degrees
+  const spreadRadius = 0.8; // degrees
   const r = Math.sqrt((index + 1) / 9) * spreadRadius;
   const angle = (index + 1) * goldenAngle;
   const offsetLat = Math.cos(angle) * r;
@@ -335,10 +335,14 @@ function createBalloon(config, index, total, cache) {
   // No path line for balloons
   // No contrail for balloons
 
+  // Random height variation per balloon (all stay close to ground)
+  const baseHeight = 0.005 + Math.random() * 0.01; // 0.005-0.015 base altitude
+  const heightVariation = 0.002 + Math.random() * 0.004; // small bobbing
+
   const follower = createPathFollower({
     curve,
     speed: 0.002, // Very slow floating
-    heightMultiplier: 0.02, // Low hover for balloons
+    heightMultiplier: baseHeight + heightVariation, // Low hover with random variation
     earthRadius: 1,
     turnaroundDelay: 0,
     smoothing: 0.05,
@@ -383,6 +387,9 @@ function createBalloon(config, index, total, cache) {
     console.log(`🎈 Balloon ${index + 1} ready above Turkey`);
   }).catch(e => console.error(`Balloon ${index + 1} load failed:`, e));
 
+  // Random base height offset for each balloon (keeps them close to ground)
+  const baseHeightOffset = 0.003 + Math.random() * 0.008; // 0.003-0.011 above surface
+
   return {
     group,
     get model() { return model; },
@@ -391,6 +398,14 @@ function createBalloon(config, index, total, cache) {
       if (!model) return;
       const state = follower.update(delta);
       follower.applyState(container, model, state);
+      // Add random base height offset
+      const radialDir = container.position.clone().normalize();
+      container.position.copy(radialDir.multiplyScalar(1 + baseHeightOffset));
+      // Dynamic scale: larger at takeoff/landing, smaller at cruise altitude
+      if (state.scaleFactor !== undefined) {
+        const s = scale * state.scaleFactor;
+        model.scale.set(s, s, s);
+      }
       // Balloons always point straight up (perpendicular to ground)
       _balloonRadial.copy(container.position).normalize();
       _balloonQuat.setFromUnitVectors(_balloonUp, _balloonRadial);
@@ -474,6 +489,11 @@ function createCruise(config, index, total, earth, cache) {
       if (!model) return;
       const state = follower.update(delta);
       follower.applyState(container, model, state);
+      // Dynamic scale: larger at takeoff/landing, smaller at cruise altitude
+      if (state.scaleFactor !== undefined) {
+        const s = scale * state.scaleFactor;
+        model.scale.set(s, s, s);
+      }
       // No isWater check needed — routes are ocean-only via waypoints
     }
   };
@@ -572,6 +592,11 @@ function createVehicle(config, index, total, cache) {
       if (!model) return;
       const state = follower.update(delta);
       follower.applyState(container, model, state);
+      // Dynamic scale: larger at takeoff/landing, smaller at cruise altitude
+      if (state.scaleFactor !== undefined) {
+        const s = scale * state.scaleFactor;
+        model.scale.set(s, s, s);
+      }
       if (type === 'aircraft') {
         if (state.shouldContrail) contrail.addPoint(state.position.clone());
         else contrail.clear();
