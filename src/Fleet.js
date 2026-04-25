@@ -162,7 +162,7 @@ function getScale(modelPath) {
   if (modelPath.includes('cruise_liberty')) return 0.3;
   if (modelPath.includes('hot_air_balloon_rainbow')) return 0.0002;
   if (modelPath.includes('hot_air_balloon_pink')) return 0.0001;
-  if (modelPath.includes('hot_air_balloon_yellow')) return 0.0001;
+  if (modelPath.includes('hot_air_balloon_yellow')) return 0.001;
   if (modelPath.includes('hot_air_balloon_blue_white')) return 0.002;
   if (modelPath.includes('hot_air_balloon_blue')) return 0.002;
   return 0.00125; // default aircraft
