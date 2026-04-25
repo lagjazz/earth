@@ -27,7 +27,7 @@ export function createScene() {
   earth.group.add(labels.group);
   
   // ─── Fleet (child of Earth) ──
-  const fleet = createFleet(earth.group);
+  const fleet = createFleet(earth);
   
   // ─── Lighting ───
   // Sun (directional, affects day/night)

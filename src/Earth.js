@@ -95,6 +95,20 @@ export function createEarth() {
   const nightTexture = loader.load(TEXTURE_URLS.night);
   const bumpMap = loader.load(TEXTURE_URLS.bump);
   
+  // Load water map and cache pixel data for land/water checks
+  const waterMap = loader.load(TEXTURE_URLS.specular, (texture) => {
+    // Cache pixel data once texture is loaded
+    const canvas = texture.image;
+    if (canvas) {
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = canvas.width;
+      tempCanvas.height = canvas.height;
+      const ctx = tempCanvas.getContext('2d');
+      ctx.drawImage(canvas, 0, 0);
+      texture._pixelData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    }
+  });
+  
   // High-res sphere for displacement
   const geometry = new THREE.SphereGeometry(1, 256, 128);
   
@@ -120,11 +134,34 @@ export function createEarth() {
     group,
     earth,
     material,
+    waterMap,
     rotate(delta) {
       group.rotation.y += delta * 0.05;
     },
     updateSunDirection(direction) {
       material.uniforms.sunDirection.value.copy(direction).normalize();
+    },
+    /**
+     * Check if a world-space position is over water.
+     * Returns true if over water, false if over land.
+     */
+    isWater(worldPos) {
+      const canvas = waterMap.image;
+      if (!canvas || !canvas.width) return true; // Assume water if not loaded
+      // Convert world position to Earth local space
+      const localPos = group.worldToLocal(worldPos.clone());
+      // Normalize to unit sphere
+      const dir = localPos.normalize();
+      // Convert to UV coordinates
+      const u = (Math.atan2(dir.z, dir.x) / (2 * Math.PI)) + 0.5;
+      const v = (Math.acos(dir.y) / Math.PI);
+      // Sample water texture (white = water, black = land)
+      const px = Math.floor(u * (canvas.width - 1));
+      const py = Math.floor(v * (canvas.height - 1));
+      const data = waterMap._pixelData;
+      if (!data) return true; // Assume water if pixel data not cached
+      const idx = (py * canvas.width + px) * 4;
+      return (data[idx] / 255) > 0.5; // >50% white = water
     }
   };
 }

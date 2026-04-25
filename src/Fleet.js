@@ -121,7 +121,7 @@ function getScale(modelPath) {
   if (modelPath.includes('airship')) return 0.001;
   if (modelPath.includes('helicopter')) return 0.003;
   if (modelPath.includes('cruise_aircraft')) return 0.0002;
-  if (modelPath.includes('cruise_liberty')) return 0.05;
+  if (modelPath.includes('cruise_liberty')) return 0.3;
   if (modelPath.includes('hot_air_balloon_rainbow')) return 0.00002;
   if (modelPath.includes('hot_air_balloon_pink')) return 0.0001;
   if (modelPath.includes('hot_air_balloon_yellow')) return 0.0001;
@@ -177,7 +177,8 @@ function latLngToVector3(lat, lng, radius) {
 /**
  * Create the full fleet.
  */
-export function createFleet(parentGroup) {
+export function createFleet(earth) {
+  const parentGroup = earth.group;
   const vehicles = [];
   const total = VEHICLES.length;
 
@@ -190,7 +191,7 @@ export function createFleet(parentGroup) {
     } else if (v.type === 'helicopter') {
       vehicle = createVehicle(v, index, total);
     } else if (v.type === 'cruise') {
-      vehicle = createCruise(v, index, total);
+      vehicle = createCruise(v, index, total, earth);
     } else {
       vehicle = createVehicle(v, index, total);
     }
@@ -308,7 +309,7 @@ function createBalloon(config, index, total) {
 /**
  * Create a cruise ship (stays on ocean surface).
  */
-function createCruise(config, index, total) {
+function createCruise(config, index, total, earth) {
   const { model: modelIdx, from, to, color, speed, delay } = config;
   const modelPath = modelIdx === 0
     ? '/models/cruise_aircraft_carrier.glb'
@@ -383,6 +384,11 @@ function createCruise(config, index, total) {
       if (!model) return;
       const state = follower.update(delta);
       follower.applyState(container, model, state);
+      // Hide ship when over land
+      if (earth && earth.isWater) {
+        const overWater = earth.isWater(container.position);
+        group.visible = overWater || !earth.waterMap?.image; // Show if texture not loaded
+      }
     }
   };
 }
