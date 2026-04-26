@@ -226,7 +226,7 @@ export function createLabels() {
       map: texture,
       transparent: true,
       depthWrite: false,
-      opacity: 0.8
+      opacity: 0.9
     });
     
     // Create sprite
